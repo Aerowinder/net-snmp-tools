@@ -1,6 +1,6 @@
 #User customizable variables#
 $netsnmp_install_dir = "$env:PROGRAMFILES\Net-SNMP" #Final install directory of Net-SNMP.
-$netsnmp_archive = "$psscriptroot\netsnmp-5.9.4-openssl-3.4.0-win64.zip" #Filename of the Net-SNMP archive. Set to the directory the script.
+$netsnmp_archive = "$psscriptroot\netsnmp-5.9.4-openssl-3.5.1-win64.zip" #Filename of the Net-SNMP archive. Set to the directory the script.
 #############################
 
 #Requires -RunAsAdministrator
@@ -90,4 +90,5 @@ Write-Host
 #Changelog
 #2024-02-15 - AS - v1, Initial release.
 #2024-07-23 - AS - v2, OpenSSL 3.3.1.
-#2025-02-01 - AS - v2, OpenSSL 3.4.0.
+#2025-02-01 - AS - v3, OpenSSL 3.4.0.
+#2025-07-22 - AS - v4, OpenSSL 3.5.1.
