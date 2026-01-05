@@ -11,9 +11,9 @@ Compile OpenSSL and Net-SNMP.
 
 ## Install-NetSNMP.ps1
 ### Purpose
-Install or update Net-SNMP on a Windows system.
+Install or update Net-SNMP.
 <br><br>
 
 ## Remove-NetSNMP.ps1
 ### Purpose
-Uninstall Net-SNMP
+Uninstall Net-SNMP.
