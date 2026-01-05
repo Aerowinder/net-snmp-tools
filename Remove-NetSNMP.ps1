@@ -1,5 +1,5 @@
-#User customizable variables#
-$netsnmp_install_dir = "$env:PROGRAMFILES\Net-SNMP" #Final install directory of Net-SNMP.
+# User customizable variables
+$netsnmp_install_dir = "$env:PROGRAMFILES\Net-SNMP" # Final install directory of Net-SNMP.
 #############################
 
 #Requires -RunAsAdministrator
@@ -44,5 +44,6 @@ Remove-NetFirewallRule -DisplayName '_Net-SNMP Trap Handler (UDP)' -ErrorAction 
 Write-Host 'Windows SNMP Client and Net-SNMP have been removed.'
 Write-Host
 
-#Changelog
+# Changelog
 #2024-02-15 - AS - v1, Initial release.
+#2025-01-04 - AS - v2, Minor changes.

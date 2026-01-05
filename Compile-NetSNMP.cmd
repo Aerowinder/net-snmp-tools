@@ -1,12 +1,12 @@
 @ECHO OFF
 
 REM Variables you will need to change
-SET "ver_openssl=3.5.1"
-SET "ver_netsnmp=5.9.4"
+SET "ver_openssl=3.6.0"
+SET "ver_netsnmp=5.9.5.2"
 SET "dir_download=C:\Users\Adam\Downloads"
 
 REM Variables you shouldn't need to change
-SET "vcvars64=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+SET "vcvars64=C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvars64.bat"
 SET "nasm=%programfiles%\NASM"
 SET "sperl=C:\Strawberry\perl\bin"
 SET "dir_openssl=C:\Program Files\OpenSSL"
@@ -52,6 +52,7 @@ set INCLUDE=%INCLUDE%;%dir_openssl%\include
 set LIB=%LIB%;%dir_openssl%\lib
 copy "%dir_openssl%\lib\libcrypto.lib" "%dir_openssl%\lib\libcrypto64md.lib"
 copy "%dir_openssl%\lib\libssl.lib" "%dir_openssl%\lib\libssl64md.lib"
+REM Check "<net-snmp-$ver.tar>\<net-snmp-$ver>\win32\Configure" for available compilation switches.
 perl Configure --with-sdk --with-winextdll --with-ssl --with-ipv6 --enable-blumenthal-aes --config=release --linktype=static --prefix="%dir_netsnmp%"
 nmake clean
 nmake
@@ -88,3 +89,4 @@ REM 2024-07-24 - AS - v1, Initial release.
 REM 2024-07-25 - AS - v2, General improvements.
 REM 2025-02-01 - AS - v3, Updated version strings (OpenSSL 3.4.0)
 REM 2025-07-22 - AS - v4, Updated version strings (OpenSSL 3.5.1)
+REM 2025-01-04 - AS - v5, Updated version strings (OpenSSL 3.6.0, Net-SNMP 5.9.5.2) and Visual Studio 2026 vcvars64.bat path

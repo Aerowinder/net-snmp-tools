@@ -1,21 +1,21 @@
-#User customizable variables#
-$netsnmp_install_dir = "$env:PROGRAMFILES\Net-SNMP" #Final install directory of Net-SNMP.
-$netsnmp_archive = "$psscriptroot\netsnmp-5.9.4-openssl-3.5.1-win64.zip" #Filename of the Net-SNMP archive. Set to the directory the script.
+# User customizable variables
+$netsnmp_install_dir = "$env:PROGRAMFILES\Net-SNMP" # Final install directory of Net-SNMP.
+$netsnmp_archive = "$psscriptroot\release\netsnmp-5.9.5.2-openssl-3.6.0-win64.zip" # Filename of the Net-SNMP archive. Set to the directory the script.
 #############################
 
 #Requires -RunAsAdministrator
 
-#Verify if the Net-SNMP archive exists. If it doesn't, terminate the script.
+# Verify if the Net-SNMP archive exists. If it doesn't, terminate the script.
 if (Test-Path -Path $netsnmp_archive) {
     Write-Host 'Net-SNMP archive located.'
 }
 else {
-    Write-Host "ERROR: Net-SNMP archive missing. Unable to continue." -ForegroundColor Red
+    Write-Host 'ERROR: Net-SNMP archive missing. Unable to continue.' -ForegroundColor Red
     Write-Host "Please verify $netsnmp_archive exists." -ForegroundColor Red
     exit
 }
 
-#Search for existing Net-SNMP services (upgrades). If they already exist, remove them. Not doing this will prevent a clean upgrade.
+# Search for existing Net-SNMP services (upgrades). If they already exist, remove them. Not doing this will prevent a clean upgrade.
 $service_netsnmp = Get-Service -Name 'Net-SNMP Agent' -ErrorAction SilentlyContinue
 $service_netsnmptrap = Get-Service -Name 'Net-SNMP Trap Handler' -ErrorAction SilentlyContinue
 if ($service_netsnmp) {
@@ -29,7 +29,7 @@ if ($service_netsnmptrap) {
     Remove-Service $service_netsnmptrap.Name
 }
 
-#Attempt to remove previous installation of Net-SNMP if it exists. Does not delete 'etc' or 'snmp' directories as these contain settings data.
+# Attempt to remove previous installation of Net-SNMP if it exists. Does not delete 'etc' or 'snmp' directories as these contain settings data.
 if (Test-Path -Path $netsnmp_install_dir) {
     Write-Host 'Removing previous installation of Net-SNMP. Important settings will be retained for upgrade purposes.'
     Remove-Item -Path "$netsnmp_install_dir\bin" -Recurse -ErrorAction SilentlyContinue
@@ -38,7 +38,7 @@ if (Test-Path -Path $netsnmp_install_dir) {
     Remove-Item -Path "$netsnmp_install_dir\temp" -Recurse -ErrorAction SilentlyContinue
 }
 
-#Extract archive, overwriting existing folders. 'etc' and 'snmp' folders are empty in the archive, so they won't overwrite our custom settings.
+# Extract archive, overwriting existing folders. 'etc' and 'snmp' folders are empty in the archive, so they won't overwrite our custom settings.
 Write-Host 'Extracting Net-SNMP archive.'
 Expand-Archive -Path $netsnmp_archive -DestinationPath $netsnmp_install_dir -Force
 
@@ -48,7 +48,7 @@ if ($dism_snmp.State -eq "NotPresent") {
     Add-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0' #Use DISM to install Windows SNMP client.
 }
 
-#After installing/verifying the Windows SNMP Client, set the services to stopped and disabled.
+# After installing/verifying the Windows SNMP Client, set the services to stopped and disabled.
 Write-Host 'Stopping and disabling Windows SNMP services.'
 $service_winsnmp = Get-Service -Name 'SNMP'
 $service_winsnmptrap = Get-Service -Name 'SNMPTrap'
@@ -87,8 +87,9 @@ Start-Service 'Net-SNMP Agent'
 Write-Host 'Net-SNMP installation complete.'
 Write-Host
 
-#Changelog
+# Changelog
 #2024-02-15 - AS - v1, Initial release.
 #2024-07-23 - AS - v2, OpenSSL 3.3.1.
 #2025-02-01 - AS - v3, OpenSSL 3.4.0.
 #2025-07-22 - AS - v4, OpenSSL 3.5.1.
+#2025-01-04 - AS - v5, Net-SNMP 5.9.5.2, OpenSSL 3.6.0.
