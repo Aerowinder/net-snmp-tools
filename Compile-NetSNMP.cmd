@@ -1,5 +1,12 @@
 @ECHO OFF
 
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    ECHO This script must be run as Administrator.
+    PAUSE
+    exit /b 1
+)
+
 REM Variables you will need to change
 SET "ver_openssl=3.6.0"
 SET "ver_netsnmp=5.9.5.2"
