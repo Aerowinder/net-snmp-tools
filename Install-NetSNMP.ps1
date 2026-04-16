@@ -1,6 +1,6 @@
 # User customizable variables
 $netsnmp_install_dir = "$env:PROGRAMFILES\Net-SNMP" # Final install directory of Net-SNMP.
-$netsnmp_archive = "$psscriptroot\release\netsnmp-5.9.5.2-openssl-3.6.0-win64.zip" # Filename of the Net-SNMP archive. Set to the directory the script.
+$netsnmp_archive = "$psscriptroot\release\netsnmp-5.9.5.2-openssl-3.6.2-win64.zip" # Filename of the Net-SNMP archive. Set to the directory the script.
 #############################
 
 #Requires -RunAsAdministrator
