@@ -42,10 +42,22 @@ if (Test-Path -Path $netsnmp_install_dir) {
 Write-Host 'Extracting Net-SNMP archive.'
 Expand-Archive -Path $netsnmp_archive -DestinationPath $netsnmp_install_dir -Force
 
-$dism_snmp = Get-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0'
-if ($dism_snmp.State -eq "NotPresent") {
-    Write-Host 'Installing Windows SNMP Client. This is a Net-SNMP dependency. This may take a few minutes.'
-    Add-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0' #Use DISM to install Windows SNMP client.
+# Verify Windows SNMP service is already installed, or install it if not detected. Different paths are required for client/server SKUs.
+# ProductType: 1 = Workstation (Win10/11), 2 = Domain Controller, 3 = Server
+if ((Get-CimInstance Win32_OperatingSystem).ProductType -eq 1) {
+    # Client SKU
+    $dism_snmp = Get-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0'
+    if ($dism_snmp.State -eq 'NotPresent') {
+        Write-Host 'Installing Windows SNMP Service. This is a Net-SNMP dependency. This may take a few minutes.'
+        Add-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0' | Out-Null
+    }
+} else {
+    # Server SKU
+    $snmp_feat = Get-WindowsFeature -Name 'SNMP-Service'
+    if (-not $snmp_feat.Installed) {
+        Write-Host 'Installing Windows SNMP Service. This is a Net-SNMP dependency. This may take a few minutes.'
+        Install-WindowsFeature -Name 'SNMP-Service' | Out-Null
+    }
 }
 
 # After installing/verifying the Windows SNMP Client, set the services to stopped and disabled.
@@ -92,4 +104,5 @@ Write-Host
 #2024-07-23 - AS - v2, OpenSSL 3.3.1.
 #2025-02-01 - AS - v3, OpenSSL 3.4.0.
 #2025-07-22 - AS - v4, OpenSSL 3.5.1.
-#2025-01-04 - AS - v5, Net-SNMP 5.9.5.2, OpenSSL 3.6.0.
+#2026-01-04 - AS - v5, Net-SNMP 5.9.5.2, OpenSSL 3.6.0.
+#2026-04-16 - AS - v6, OpenSSL 3.6.2, added support for Windows Server installations.
