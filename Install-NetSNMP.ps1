@@ -46,8 +46,8 @@ Expand-Archive -Path $netsnmp_archive -DestinationPath $netsnmp_install_dir -For
 # ProductType: 1 = Workstation (Win10/11), 2 = Domain Controller, 3 = Server
 if ((Get-CimInstance Win32_OperatingSystem).ProductType -eq 1) {
     # Client SKU
-    $dism_snmp = Get-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0'
-    if ($dism_snmp.State -eq 'NotPresent') {
+    $snmp_feat = Get-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0'
+    if ($snmp_feat.State -eq 'NotPresent') {
         Write-Host 'Installing Windows SNMP Service. This is a Net-SNMP dependency. This may take a few minutes.'
         Add-WindowsCapability -Online -Name 'SNMP.Client~~~~0.0.1.0' | Out-Null
     }
